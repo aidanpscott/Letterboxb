@@ -1,55 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <title>Hello, my name is Aidan Scott</title>
+    <style>
+        .header-info {
+            margin-bottom: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 1em;
+        }
+
+        .profile-section {
+            margin: 2em 0;
+        }
+
+        .idea-section {
+            margin-top: 2em;
+        }
+    </style>
 </head>
 
 <body>
-    <title>Hello, my name is Aidan Scott</title><br><br>
-    <h1>
-        Where I'm from: Rockville, Maryland <br>
-        My major/year: Software Engineering 2025 <br><br>
-    </h1>
+    <header>
+        <h1>About Aidan Scott</h1>
+        <div class="header-info">
+            <p>From: Rockville, Maryland</p>
+            <p>Major: Software Engineering, Class of 2025</p>
+        </div>
+    </header>
 
-    <h2>
-        Interesting information about me:
-    </h2>
+    <section class="profile-section">
+        <h2>Interesting Information About Me</h2>
+        <ul>
+            <li>Before coming to LU, I lived in Japan for 3 years • I am conversational in Japanese • I am a classically
+                trained master pianist • I play Tennis and am on the Liberty Club Team • I enjoy reading books • I farm
+                on my offtime</li>
+        </ul>
+    </section>
 
-    <ul>
-        <li>
-            Before coming to LU, I lived in Japan for 3 years
-        </li>
-        <li>
-            I am conversational in Japanese
-        </li>
-        <li>
-            I am a classically trained master pianist.
-        </li>
-        <li>
-            I play Tennis and am on the Liberty Club Team
-        </li>
-        <li>
-            I enjoy reading books
-        </li>
-        <li>
-            I farm on my offtime.
-        </li>
-    </ul>
-
-    <h3>
+    <section class="profile-section">
+        <h2>Color Picker</h2>
         <form>
-            <label>Pick a color</label>
-            <input type="color"><br><br>
-            <input type="submit">
+            <div class="form-group">
+                <label for="color-picker">Pick a color:</label>
+                <input type="color" id="color-picker" name="color-picker">
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <button type="submit">Submit</button>
         </form>
-    </h3>
-    <br><br>
-    <h4>
-        <h1>Here's my goodreads page: </h1>
-        <a href="https://www.goodreads.com/user/show/168250803-aidan-scott" target="_blank">My Goodreads Profile</a>
-    </h4>
+    </section>
+
+    <section class="idea-section">
+        <h2>Website Project Idea</h2>
+        <p>I plan to create a Japanese language learning platform that combines my experience living in Japan with
+            interactive piano lessons, allowing users to learn Japanese through music.</p>
+    </section>
+
+    <section class="profile-section">
+        <h2>Social Links</h2>
+        <a href="https://www.goodreads.com/user/show/168250803-aidan-scott" target="_blank" rel="noopener noreferrer">My
+            Goodreads Profile</a>
+    </section>
 </body>
 
 </html>
