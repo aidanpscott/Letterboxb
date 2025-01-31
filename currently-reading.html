@@ -5,80 +5,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currently Reading - Aidan Scott</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f0f0f0;
-        }
-
-        .book-section {
-            background-color: #ffffff;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-
-        .book-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .navigation {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .navigation a {
-            color: #2c3e50;
-            text-decoration: none;
-            padding: 5px 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <nav class="navigation">
-        <a href="index.html">Back to Home</a>
+    <header class="main-header">
+        <h1>Currently Reading</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html" class="active">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
     </nav>
 
-    <h1>Currently Reading</h1>
-
     <section class="book-section">
-        <h2 style="color: #e74c3c; border-bottom: 2px solid #e74c3c; padding-bottom: 5px;">
-            My Reading List
-        </h2>
-        <ul class="book-list">
-            <li style="padding: 15px; margin: 10px 0; background-color: #fde7e7; border-left: 4px solid #e74c3c;">
-                <h3 style="margin: 0; color: #c0392b;">Eleventh Cycle</h3>
-                <p style="margin: 5px 0; font-style: italic;">by Kian N. Ardalan</p>
-            </li>
-            <li style="padding: 15px; margin: 10px 0; background-color: #e7fde7; border-left: 4px solid #27ae60;">
-                <h3 style="margin: 0; color: #27ae60;">The Will of the Many</h3>
-                <p style="margin: 5px 0; font-style: italic;">by James Islington</p>
-            </li>
-            <li style="padding: 15px; margin: 10px 0; background-color: #e7e7fd; border-left: 4px solid #2980b9;">
-                <h3 style="margin: 0; color: #2980b9;">The Runelords</h3>
-                <p style="margin: 5px 0; font-style: italic;">by David Farland</p>
-            </li>
-        </ul>
+        <h2 class="section-title">My Reading List</h2>
+        <div class="book-grid">
+            <article class="book-card">
+                <img src="book-images/eleventh-cycle.jpg" alt="Eleventh Cycle">
+                <div class="book-info">
+                    <h3>Eleventh Cycle</h3>
+                    <p class="book-author">by Kian N. Ardalan</p>
+                    <p class="book-genre">Pages Read: 7 of 779</p>
+                </div>
+            </article>
+
+            <article class="book-card">
+                <img src="book-images/will-of-many.jpg" alt="The Will of the Many">
+                <div class="book-info">
+                    <h3>The Will of the Many</h3>
+                    <p class="book-author">by James Islington</p>
+                    <p class="book-genre">Pages Read: 237 of 720</p>
+                </div>
+            </article>
+
+            <article class="book-card">
+                <img src="book-images/runelords.jpg" alt="The Runelords">
+                <div class="book-info">
+                    <h3>The Runelords</h3>
+                    <p class="book-author">by David Farland</p>
+                    <p class="book-genre">Pages Read: 108 of 613</p>
+                </div>
+            </article>
+        </div>
     </section>
 
-    <section class="book-section">
-        <h2>About My Reading</h2>
+    <section class="profile-section">
+        <h2 class="section-title">About My Reading</h2>
         <p>I track my reading progress on Goodreads. Feel free to follow my reading journey!</p>
         <a href="https://www.goodreads.com/user/show/168250803-aidan-scott" target="_blank" rel="noopener noreferrer"
-            style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;">
+            class="social-link">
             My Goodreads Profile
         </a>
     </section>
+
+    <!-- Add a new interactive section -->
+    <section class="profile-section">
+        <h2 class="section-title">Reading Progress</h2>
+        <div id="progress-container">
+            <p>Want to check my current reading progress?</p>
+            <button onclick="showProgress()" class="submit-btn">View Progress</button>
+        </div>
+    </section>
+
+    <script>
+        // Function to show reading progress
+        function showProgress() {
+            const books = [
+                { title: "Eleventh Cycle", pagesRead: 245, totalPages: 410 },
+                { title: "The Will of the Many", pagesRead: 182, totalPages: 520 },
+                { title: "The Runelords", pagesRead: 156, totalPages: 350 }
+            ];
+
+            let progressMessage = "📚 Current Reading Progress:\n\n";
+            books.forEach(book => {
+                const percentage = Math.round((book.pagesRead / book.totalPages) * 100);
+                progressMessage += `${book.title}: ${book.pagesRead}/${book.totalPages} pages (${percentage}% complete)\n`;
+            });
+
+            alert(progressMessage);
+        }
+    </script>
 </body>
 
 </html>
