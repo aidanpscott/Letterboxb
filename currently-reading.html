@@ -20,37 +20,7 @@
         <a href="favorite-authors.html">Top 10 Authors</a>
     </nav>
 
-    <section class="book-section">
-        <h2 class="section-title">My Reading List</h2>
-        <div class="book-grid">
-            <article class="book-card">
-                <img src="book-images/eleventh-cycle.jpg" alt="Eleventh Cycle">
-                <div class="book-info">
-                    <h3>Eleventh Cycle</h3>
-                    <p class="book-author">by Kian N. Ardalan</p>
-                    <p class="book-genre">Pages Read: 7 of 779</p>
-                </div>
-            </article>
-
-            <article class="book-card">
-                <img src="book-images/will-of-many.jpg" alt="The Will of the Many">
-                <div class="book-info">
-                    <h3>The Will of the Many</h3>
-                    <p class="book-author">by James Islington</p>
-                    <p class="book-genre">Pages Read: 237 of 720</p>
-                </div>
-            </article>
-
-            <article class="book-card">
-                <img src="book-images/runelords.jpg" alt="The Runelords">
-                <div class="book-info">
-                    <h3>The Runelords</h3>
-                    <p class="book-author">by David Farland</p>
-                    <p class="book-genre">Pages Read: 108 of 613</p>
-                </div>
-            </article>
-        </div>
-    </section>
+    <div id="reading-progress-root"></div>
 
     <section class="profile-section">
         <h2 class="section-title">About My Reading</h2>
@@ -61,31 +31,13 @@
         </a>
     </section>
 
-    <section class="profile-section">
-        <h2 class="section-title">Reading Progress</h2>
-        <div id="progress-container">
-            <p>Want to check my current reading progress?</p>
-            <button onclick="showProgress()" class="submit-btn">View Progress</button>
-        </div>
-    </section>
+    <script type="module">
+        import { createRoot } from 'react-dom/client';
+        import ReadingProgress from './components/ReadingProgress';
 
-    <script>
-        // Function to show reading progress
-        function showProgress() {
-            const books = [
-                { title: "Eleventh Cycle", pagesRead: 7, totalPages: 779 },
-                { title: "The Will of the Many", pagesRead: 237, totalPages: 720 },
-                { title: "The Runelords", pagesRead: 108, totalPages: 613 }
-            ];
-
-            let progressMessage = "📚 Current Reading Progress:\n\n";
-            books.forEach(book => {
-                const percentage = Math.round((book.pagesRead / book.totalPages) * 100);
-                progressMessage += `${book.title}: ${book.pagesRead}/${book.totalPages} pages (${percentage}% complete)\n`;
-            });
-
-            alert(progressMessage);
-        }
+        const container = document.getElementById('reading-progress-root');
+        const root = createRoot(container);
+        root.render(<ReadingProgress />);
     </script>
 </body>
 
