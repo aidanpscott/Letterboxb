@@ -25,7 +25,7 @@
     <section class="profile-section">
         <h2 class="section-title">Tell Us About Your Favorite Book</h2>
 
-        <form id="bookForm" onsubmit="handleSubmit(event)" class="form-group">
+        <form id="bookForm" class="form-group">
             <div class="form-field">
                 <label for="name">Your Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -69,38 +69,6 @@
         </form>
     </section>
 
-    <script>
-        // Function to handle form submission
-        function handleSubmit(event) {
-            event.preventDefault();
-
-            // Get form values using getElementById
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const bookTitle = document.getElementById('bookTitle').value;
-            const author = document.getElementById('author').value;
-            const genre = document.getElementById('genre').value;
-            const review = document.getElementById('review').value;
-
-            // Store the data in localStorage
-            const bookData = {
-                name: name,
-                age: age,
-                bookTitle: bookTitle,
-                author: author,
-                genre: genre,
-                review: review
-            };
-            localStorage.setItem('bookData', JSON.stringify(bookData));
-
-            // Alert the user
-            alert('Thank you for sharing your favorite book!');
-
-            // Redirect to the display page
-            window.location.href = 'book-info.html';
-        }
-    </script>
-
     <style>
         .form-field {
             margin-bottom: 20px;
@@ -127,21 +95,22 @@
             resize: vertical;
         }
 
-        .submit-btn {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
+        .result-message {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e8f6f3;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            border-left: 4px solid #2ecc71;
         }
 
-        .submit-btn:hover {
-            background-color: #2980b9;
+        .book-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #bdc3c7;
         }
     </style>
+
+    <script src="proj2.js"></script>
 </body>
 
 </html>

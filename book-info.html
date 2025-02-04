@@ -23,7 +23,7 @@
     </nav>
 
     <section class="profile-section">
-        <h2 class="section-title">Submitted Favorite Book</h2>
+        <h2 class="section-title">Submitted Information</h2>
         <div id="bookDisplay" class="book-display">
             <!-- Content will be populated by JavaScript -->
         </div>
@@ -43,24 +43,28 @@
             // Create HTML content with the book data
             const content = `
                 <div class="book-info-card">
-                    <h3>${bookData.bookTitle}</h3>
-                    <p class="book-detail"><strong>Submitted by:</strong> ${bookData.name} (Age: ${bookData.age})</p>
-                    <p class="book-detail"><strong>Author:</strong> ${bookData.author}</p>
-                    <p class="book-detail"><strong>Genre:</strong> ${bookData.genre}</p>
-                    <div class="book-review">
-                        <h4>Why this book is special:</h4>
-                        <p>${bookData.review}</p>
+                    <h3>Hello, ${bookData.name}!</h3>
+                    <p class="reader-info">
+                        You are ${bookData.age} years old (${bookData.ageInMonths} months)<br>
+                        Birth Year: ${bookData.birthYear}
+                    </p>
+                    <p class="message">${bookData.message}</p>
+                    
+                    <div class="book-details">
+                        <h4>Your Favorite Book:</h4>
+                        <p class="book-detail"><strong>Title:</strong> ${bookData.bookTitle}</p>
+                        <p class="book-detail"><strong>Author:</strong> ${bookData.author}</p>
+                        <p class="book-detail"><strong>Genre:</strong> ${bookData.genre}</p>
+                        <div class="book-review">
+                            <h4>Why this book is special:</h4>
+                            <p>${bookData.review}</p>
+                        </div>
                     </div>
                 </div>
             `;
 
             // Set the HTML content
             displayDiv.innerHTML = content;
-
-            // Apply some styling
-            displayDiv.style.backgroundColor = '#f9f9f9';
-            displayDiv.style.padding = '20px';
-            displayDiv.style.borderRadius = '5px';
         } else {
             // Handle case when no data is available
             document.getElementById('bookDisplay').innerHTML = `
@@ -81,6 +85,19 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .reader-info {
+            margin: 15px 0;
+            color: #34495e;
+            font-size: 1.1em;
+        }
+
+        .message {
+            padding: 10px;
+            background-color: #e8f6f3;
+            border-left: 4px solid #2ecc71;
+            margin: 15px 0;
         }
 
         .book-detail {
