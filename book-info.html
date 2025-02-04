@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Book Information - Aidan Scott</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Submitted Book Information</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
+        <a href="book-form.html">Share Book</a>
+        <a href="book-info.html">Book Info</a>
+    </nav>
+
+    <section class="profile-section">
+        <h2 class="section-title">Submitted Favorite Book</h2>
+        <div id="bookDisplay" class="book-display">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <script>
+        // Get the stored book data
+        const storedData = localStorage.getItem('bookData');
+
+        if (storedData) {
+            // Parse the JSON data
+            const bookData = JSON.parse(storedData);
+
+            // Get the display element
+            const displayDiv = document.getElementById('bookDisplay');
+
+            // Create HTML content with the book data
+            const content = `
+                <div class="book-info-card">
+                    <h3>${bookData.bookTitle}</h3>
+                    <p class="book-detail"><strong>Submitted by:</strong> ${bookData.name} (Age: ${bookData.age})</p>
+                    <p class="book-detail"><strong>Author:</strong> ${bookData.author}</p>
+                    <p class="book-detail"><strong>Genre:</strong> ${bookData.genre}</p>
+                    <div class="book-review">
+                        <h4>Why this book is special:</h4>
+                        <p>${bookData.review}</p>
+                    </div>
+                </div>
+            `;
+
+            // Set the HTML content
+            displayDiv.innerHTML = content;
+
+            // Apply some styling
+            displayDiv.style.backgroundColor = '#f9f9f9';
+            displayDiv.style.padding = '20px';
+            displayDiv.style.borderRadius = '5px';
+        } else {
+            // Handle case when no data is available
+            document.getElementById('bookDisplay').innerHTML = `
+                <p>No book information has been submitted yet. 
+                <a href="book-form.html">Share your favorite book here</a>.</p>
+            `;
+        }
+    </script>
+
+    <style>
+        .book-display {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .book-info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-detail {
+            margin: 10px 0;
+            color: #34495e;
+        }
+
+        .book-review {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .book-review h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Favorite Book - Aidan Scott</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Share Your Favorite Book</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
+        <a href="book-form.html">Share Book</a>
+        <a href="book-info.html">Book Info</a>
+    </nav>
+
+    <section class="profile-section">
+        <h2 class="section-title">Tell Us About Your Favorite Book</h2>
+
+        <form id="bookForm" onsubmit="handleSubmit(event)" class="form-group">
+            <div class="form-field">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-field">
+                <label for="age">Your Age:</label>
+                <input type="number" id="age" name="age" min="1" max="120" required>
+            </div>
+
+            <div class="form-field">
+                <label for="bookTitle">Favorite Book Title:</label>
+                <input type="text" id="bookTitle" name="bookTitle" required>
+            </div>
+
+            <div class="form-field">
+                <label for="author">Book Author:</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+
+            <div class="form-field">
+                <label for="genre">Book Genre:</label>
+                <select id="genre" name="genre" required>
+                    <option value="">Select a genre...</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Historical Fiction">Historical Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label for="review">Why is this your favorite book?</label>
+                <textarea id="review" name="review" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </section>
+
+    <script>
+        // Function to handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            // Get form values using getElementById
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const bookTitle = document.getElementById('bookTitle').value;
+            const author = document.getElementById('author').value;
+            const genre = document.getElementById('genre').value;
+            const review = document.getElementById('review').value;
+
+            // Store the data in localStorage
+            const bookData = {
+                name: name,
+                age: age,
+                bookTitle: bookTitle,
+                author: author,
+                genre: genre,
+                review: review
+            };
+            localStorage.setItem('bookData', JSON.stringify(bookData));
+
+            // Alert the user
+            alert('Thank you for sharing your favorite book!');
+
+            // Redirect to the display page
+            window.location.href = 'book-info.html';
+        }
+    </script>
+
+    <style>
+        .form-field {
+            margin-bottom: 20px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-field textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</body>
+
+</html>
