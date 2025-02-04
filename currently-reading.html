@@ -20,7 +20,61 @@
         <a href="favorite-authors.html">Top 10 Authors</a>
     </nav>
 
-    <div id="reading-progress-root"></div>
+    <section class="book-section">
+        <h2 class="section-title">My Reading List</h2>
+        <div class="book-grid">
+            <article class="book-card">
+                <img src="book-images/eleventh-cycle.jpg" alt="Eleventh Cycle">
+                <div class="book-info">
+                    <h3>Eleventh Cycle</h3>
+                    <p class="book-author">by Kian N. Ardalan</p>
+                    <div class="book-progress">
+                        <input type="number" value="7" min="0" max="779" class="page-input" data-total="779"
+                            data-book="eleventh-cycle">
+                        <span>of 779 pages</span>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 0.9%"></div>
+                        </div>
+                        <p class="completion">0.9% complete</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="book-card">
+                <img src="book-images/will-of-many.jpg" alt="The Will of the Many">
+                <div class="book-info">
+                    <h3>The Will of the Many</h3>
+                    <p class="book-author">by James Islington</p>
+                    <div class="book-progress">
+                        <input type="number" value="237" min="0" max="720" class="page-input" data-total="720"
+                            data-book="will-of-many">
+                        <span>of 720 pages</span>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 32.9%"></div>
+                        </div>
+                        <p class="completion">32.9% complete</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="book-card">
+                <img src="book-images/runelords.jpg" alt="The Runelords">
+                <div class="book-info">
+                    <h3>The Runelords</h3>
+                    <p class="book-author">by David Farland</p>
+                    <div class="book-progress">
+                        <input type="number" value="108" min="0" max="613" class="page-input" data-total="613"
+                            data-book="runelords">
+                        <span>of 613 pages</span>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 17.6%"></div>
+                        </div>
+                        <p class="completion">17.6% complete</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
 
     <section class="profile-section">
         <h2 class="section-title">About My Reading</h2>
@@ -31,13 +85,79 @@
         </a>
     </section>
 
-    <script type="module">
-        import { createRoot } from 'react-dom/client';
-        import ReadingProgress from './components/ReadingProgress';
+    <style>
+        .book-progress {
+            margin-top: 10px;
+        }
 
-        const container = document.getElementById('reading-progress-root');
-        const root = createRoot(container);
-        root.render(<ReadingProgress />);
+        .page-input {
+            width: 60px;
+            padding: 4px;
+            margin-right: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            transition: width 0.3s ease;
+        }
+
+        .completion {
+            color: #7f8c8d;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+    </style>
+
+    <script>
+        document.querySelectorAll('.page-input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const pages = parseInt(e.target.value);
+                const totalPages = parseInt(e.target.dataset.total);
+
+                if (pages > totalPages) {
+                    alert(`Pages read cannot exceed total pages (${totalPages})`);
+                    e.target.value = e.target.defaultValue;
+                    return;
+                }
+
+                if (pages < 0) {
+                    alert('Pages read cannot be negative');
+                    e.target.value = 0;
+                    return;
+                }
+
+                const percentage = ((pages / totalPages) * 100).toFixed(1);
+                const progressBar = e.target.parentElement.querySelector('.progress');
+                const completion = e.target.parentElement.querySelector('.completion');
+
+                progressBar.style.width = `${percentage}%`;
+                completion.textContent = `${percentage}% complete`;
+
+                // Save to localStorage
+                const bookKey = e.target.dataset.book;
+                localStorage.setItem(bookKey, pages);
+            });
+
+            // Load saved progress
+            const bookKey = input.dataset.book;
+            const savedPages = localStorage.getItem(bookKey);
+            if (savedPages) {
+                input.value = savedPages;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
     </script>
 </body>
 
