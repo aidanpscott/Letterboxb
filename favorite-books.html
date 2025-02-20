@@ -22,11 +22,112 @@
         <a href="book-info.html">Book Info</a>
     </nav>
 
+    <!-- *** REQUIREMENT #3: Using createElement and appendChild to create featured book section *** -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create featured book section elements
+            const featuredSection = document.createElement('section');
+            featuredSection.className = 'profile-section featured-book-section';
+
+            // Create section heading
+            const sectionHeading = document.createElement('h2');
+            sectionHeading.className = 'section-title';
+            sectionHeading.textContent = 'Featured Book';
+
+            // Create featured book container
+            const featuredContainer = document.createElement('div');
+            featuredContainer.className = 'featured-book-container';
+
+            // Create book image container (left side)
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'featured-book-image-container';
+
+            // Create book image
+            const bookImage = document.createElement('img');
+            bookImage.src = 'book-images/throne-of-bones.jpg';
+            bookImage.alt = 'A Throne of Bones by Vox Day';
+            bookImage.className = 'featured-book-image';
+
+            // Create image caption
+            const imageCaption = document.createElement('p');
+            imageCaption.className = 'image-caption';
+            imageCaption.textContent = 'An underrated masterclass of epic fantasy';
+
+            // Create book details container (right side)
+            const detailsContainer = document.createElement('div');
+            detailsContainer.className = 'featured-book-details';
+
+            // Create book title
+            const bookTitle = document.createElement('h3');
+            bookTitle.textContent = 'A Throne of Bones';
+
+            // Create book author
+            const bookAuthor = document.createElement('p');
+            bookAuthor.className = 'featured-book-author';
+            bookAuthor.textContent = 'by Vox Day';
+
+            // Create book description
+            const bookDescription = document.createElement('p');
+            bookDescription.className = 'featured-book-description';
+            bookDescription.textContent = 'A Throne of Bones is an epic fantasy novel that explores complex political intrigue in a richly detailed world inspired by the Roman Empire. It features multiple viewpoint characters navigating war, religion, and power struggles in a meticulously crafted medieval setting with magical elements.';
+
+            // Create book details list
+            const detailsList = document.createElement('ul');
+            detailsList.className = 'featured-book-details-list';
+
+            // Create list items
+            const listItems = [
+                'Series: Arts of Dark and Light',
+                'Published: 2012',
+                'Pages: 934',
+                'Genre: Epic Fantasy'
+            ];
+
+            // Add each list item to the list
+            listItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item;
+                detailsList.appendChild(listItem);
+            });
+
+            // Create CTA button as an anchor tag instead of button
+            const ctaButton = document.createElement('a');
+            ctaButton.className = 'featured-book-cta';
+            ctaButton.textContent = 'View on Amazon';
+            ctaButton.href = 'https://www.amazon.com/Throne-Bones-Arts-Dark-Light-ebook/dp/B0CXR3Q4Z8/ref=sr_1_1?dib=eyJ2IjoiMSJ9.fzmFiWvBkvZcmJ-skQ2OocH-JmORJ5UYdYYCmqYNRiCGclEaEM6nixMxec8OQogyRW0e622BCbZLzxI81AaJGMhZVFvhA2SfPnksuAuWsNNSuwpjdeO8aTMrTvlwf9NFgLEE0167vklLQga2GdJIBv0coxr5ZoZslRONW1rwDxRgtvjW3vc47QKgb0QyitSHUKVy1vIC_Lq2b2oGXEdH-QZfhDmtdsBUQaYGltPprtA.-9EgdfQyQnZV3HO2oCC-yMhegmo6pfN483QC2KkGVHg&dib_tag=se&keywords=a+throne+of+bones&qid=1740061907&s=books&sr=1-1';
+            ctaButton.target = '_blank';  // Open in new tab
+            ctaButton.rel = 'noopener noreferrer';  // Security best practice for external links
+
+            // Assemble the DOM structure using appendChild
+            imageContainer.appendChild(bookImage);
+            imageContainer.appendChild(imageCaption);
+
+            detailsContainer.appendChild(bookTitle);
+            detailsContainer.appendChild(bookAuthor);
+            detailsContainer.appendChild(bookDescription);
+            detailsContainer.appendChild(detailsList);
+            detailsContainer.appendChild(ctaButton);
+
+            featuredContainer.appendChild(imageContainer);
+            featuredContainer.appendChild(detailsContainer);
+
+            featuredSection.appendChild(sectionHeading);
+            featuredSection.appendChild(featuredContainer);
+
+            // Add the new section before the book grid
+            const bookGrid = document.querySelector('.book-grid');
+            document.body.insertBefore(featuredSection, bookGrid);
+        });
+    </script>
+
     <div class="book-grid">
         <!-- Books will be dynamically loaded here with reviews -->
     </div>
 
     <script src="proj3.js"></script>
+
+    <!-- Include the lightbox script -->
+    <script src="lightbox.js"></script>
 </body>
 
 </html>

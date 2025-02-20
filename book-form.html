@@ -21,6 +21,117 @@
         <a href="book-info.html">Book Info</a>
     </nav>
 
+    <!-- *** PROJECT 5: REQUIREMENT #3: Using createElement and appendChild to create example section *** -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create example section
+            const exampleSection = document.createElement('section');
+            exampleSection.className = 'example-section';
+
+            // Create section heading
+            const sectionHeading = document.createElement('h2');
+            sectionHeading.className = 'section-title';
+            sectionHeading.textContent = 'Need Inspiration? Check Out My Favorite';
+
+            // Create container for example
+            const exampleContainer = document.createElement('div');
+            exampleContainer.className = 'example-container';
+
+            // Create left column for book image
+            const imageColumn = document.createElement('div');
+            imageColumn.className = 'example-image-column';
+
+            // Create book image with frame
+            const imageFrame = document.createElement('div');
+            imageFrame.className = 'example-image-frame';
+
+            const bookImage = document.createElement('img');
+            bookImage.src = 'book-images/fall-of-reach.jpg';
+            bookImage.alt = 'Halo: The Fall of Reach by Eric Nylund';
+            bookImage.className = 'example-book-image';
+
+            // Create right column for example content
+            const contentColumn = document.createElement('div');
+            contentColumn.className = 'example-content-column';
+
+            // Create example heading
+            const exampleHeading = document.createElement('h3');
+            exampleHeading.textContent = 'My Submission Example:';
+
+            // Create example data container
+            const exampleData = document.createElement('div');
+            exampleData.className = 'example-data';
+
+            // Create example fields
+            const exampleFields = [
+                { label: 'Book Title:', value: 'Halo: The Fall of Reach' },
+                { label: 'Author:', value: 'Eric Nylund' },
+                { label: 'Genre:', value: 'Military Science Fiction' },
+                { label: 'Why I love it:', value: 'The book that got me into reading. It features tight and accessible prose with compelling characters, particularly the journey of Master Chief. The military sci-fi setting is exceptionally well-realized, with a perfect balance of action, character development, and world-building.' }
+            ];
+
+            // Create a definition list for the example data
+            const definitionList = document.createElement('dl');
+            definitionList.className = 'example-list';
+
+            // Add each field to the definition list
+            exampleFields.forEach(field => {
+                const term = document.createElement('dt');
+                term.textContent = field.label;
+                term.className = 'example-term';
+
+                const definition = document.createElement('dd');
+                definition.textContent = field.value;
+                definition.className = 'example-definition';
+
+                definitionList.appendChild(term);
+                definitionList.appendChild(definition);
+            });
+
+            // Create helper text
+            const helperText = document.createElement('p');
+            helperText.className = 'helper-text';
+            helperText.textContent = 'Feel free to share your own favorite book below. Be as detailed as you like about why it means something to you!';
+
+            // Create use-example button
+            const useExampleButton = document.createElement('button');
+            useExampleButton.textContent = 'Use as Template';
+            useExampleButton.className = 'use-example-button';
+            useExampleButton.addEventListener('click', function () {
+                // Populate the form with example data
+                document.getElementById('bookTitle').value = 'Halo: The Fall of Reach';
+                document.getElementById('author').value = 'Eric Nylund';
+                document.getElementById('genre').value = 'Science Fiction';
+
+                // Scroll to the form
+                document.getElementById('bookForm').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Assemble the DOM structure using appendChild
+            imageFrame.appendChild(bookImage);
+            imageColumn.appendChild(imageFrame);
+
+            exampleData.appendChild(definitionList);
+
+            contentColumn.appendChild(exampleHeading);
+            contentColumn.appendChild(exampleData);
+            contentColumn.appendChild(helperText);
+            contentColumn.appendChild(useExampleButton);
+
+            exampleContainer.appendChild(imageColumn);
+            exampleContainer.appendChild(contentColumn);
+
+            exampleSection.appendChild(sectionHeading);
+            exampleSection.appendChild(exampleContainer);
+
+            // Get the form section
+            const formSection = document.querySelector('.profile-section');
+
+            // Insert example section before the form
+            document.body.insertBefore(exampleSection, formSection);
+        });
+    </script>
+
     <section class="profile-section">
         <h2 class="section-title">Tell Us About Your Favorite Book</h2>
 
@@ -69,48 +180,10 @@
         </form>
     </section>
 
-    <style>
-        .form-field {
-            margin-bottom: 20px;
-        }
-
-        .form-field label {
-            display: block;
-            margin-bottom: 5px;
-            color: #2c3e50;
-            font-weight: bold;
-        }
-
-        .form-field input,
-        .form-field select,
-        .form-field textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .form-field textarea {
-            resize: vertical;
-        }
-
-        .result-message {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #e8f6f3;
-            border-radius: 5px;
-            border-left: 4px solid #2ecc71;
-        }
-
-        .book-details {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #bdc3c7;
-        }
-    </style>
-
     <script src="proj2.js"></script>
+
+    <!-- Include the lightbox script -->
+    <script src="lightbox.js"></script>
 </body>
 
 </html>

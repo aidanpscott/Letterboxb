@@ -22,6 +22,137 @@
         <a href="book-info.html">Book Info</a>
     </nav>
 
+    <!-- *** PROJECT 5: REQUIREMENT #3: Using createElement and appendChild to create finished reading section *** -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create finished reading section
+            const finishedSection = document.createElement('section');
+            finishedSection.className = 'finished-reading-section';
+
+            // Create section header
+            const sectionHeader = document.createElement('h2');
+            sectionHeader.className = 'section-title';
+            sectionHeader.textContent = 'Recently Finished';
+
+            // Create container for the finished book
+            const finishedBookContainer = document.createElement('div');
+            finishedBookContainer.className = 'finished-book-container';
+
+            // Create left column for book image
+            const imageColumn = document.createElement('div');
+            imageColumn.className = 'finished-book-image-column';
+
+            // Create book image
+            const bookImage = document.createElement('img');
+            bookImage.src = 'book-images/will-of-many.jpg';
+            bookImage.alt = 'The Will of the Many by James Islington';
+            bookImage.className = 'finished-book-image';
+
+            // Create image overlay text
+            const imageOverlayText = document.createElement('div');
+            imageOverlayText.className = 'image-overlay-text';
+            imageOverlayText.textContent = 'Completed!';
+
+            // Create right column for book details
+            const detailsColumn = document.createElement('div');
+            detailsColumn.className = 'finished-book-details-column';
+
+            // Create book title
+            const bookTitle = document.createElement('h3');
+            bookTitle.textContent = 'The Will of the Many';
+
+            // Create book author
+            const bookAuthor = document.createElement('p');
+            bookAuthor.className = 'book-author';
+            bookAuthor.textContent = 'by James Islington';
+
+            // Create rating container
+            const ratingContainer = document.createElement('div');
+            ratingContainer.className = 'rating-container';
+
+            // Create rating label
+            const ratingLabel = document.createElement('span');
+            ratingLabel.className = 'rating-label';
+            ratingLabel.textContent = 'My Rating: ';
+
+            // Create star rating
+            const starRating = document.createElement('div');
+            starRating.className = 'star-rating';
+
+            // Add 5 stars
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('span');
+                star.className = i < 4 ? 'star filled' : 'star empty';
+                star.innerHTML = '&#9733;'; // Star symbol
+                starRating.appendChild(star);
+            }
+
+            // Create completion date
+            const completionDate = document.createElement('p');
+            completionDate.className = 'completion-date';
+            completionDate.textContent = 'Finished on: February 18, 2025';
+
+            // Create book review
+            const bookReview = document.createElement('p');
+            bookReview.className = 'book-review';
+            bookReview.textContent = 'An excellent fantasy novel with a unique magic system based on magical contracts. The character development was exceptional, and the world-building rich and immersive. I particularly enjoyed the academy setting and political intrigue.';
+
+            // Create stats container
+            const statsContainer = document.createElement('div');
+            statsContainer.className = 'book-stats-container';
+
+            // Create stats heading
+            const statsHeading = document.createElement('h4');
+            statsHeading.textContent = 'Reading Stats';
+
+            // Create stats list
+            const statsList = document.createElement('ul');
+            statsList.className = 'stats-list';
+
+            // Create stats items
+            const statsData = [
+                'Pages: 720',
+                'Reading time: 18 days',
+                'Average: 40 pages/day',
+                'Series: The Will and the Word (Book 1)'
+            ];
+
+            // Add stats items to list
+            statsData.forEach(stat => {
+                const listItem = document.createElement('li');
+                listItem.textContent = stat;
+                statsList.appendChild(listItem);
+            });
+
+            // Assemble the DOM structure using appendChild
+            imageColumn.appendChild(bookImage);
+            imageColumn.appendChild(imageOverlayText);
+
+            ratingContainer.appendChild(ratingLabel);
+            ratingContainer.appendChild(starRating);
+
+            statsContainer.appendChild(statsHeading);
+            statsContainer.appendChild(statsList);
+
+            detailsColumn.appendChild(bookTitle);
+            detailsColumn.appendChild(bookAuthor);
+            detailsColumn.appendChild(ratingContainer);
+            detailsColumn.appendChild(completionDate);
+            detailsColumn.appendChild(bookReview);
+            detailsColumn.appendChild(statsContainer);
+
+            finishedBookContainer.appendChild(imageColumn);
+            finishedBookContainer.appendChild(detailsColumn);
+
+            finishedSection.appendChild(sectionHeader);
+            finishedSection.appendChild(finishedBookContainer);
+
+            // Get the book section to insert before
+            const bookSection = document.querySelector('.book-section');
+            document.body.insertBefore(finishedSection, bookSection);
+        });
+    </script>
+
     <section class="book-section">
         <h2 class="section-title">My Reading List</h2>
         <div class="book-grid">
@@ -38,23 +169,6 @@
                             <div class="progress" style="width: 0.9%"></div>
                         </div>
                         <p class="completion">0.9% complete</p>
-                    </div>
-                </div>
-            </article>
-
-            <article class="book-card">
-                <img src="book-images/will-of-many.jpg" alt="The Will of the Many">
-                <div class="book-info">
-                    <h3>The Will of the Many</h3>
-                    <p class="book-author">by James Islington</p>
-                    <div class="book-progress">
-                        <input type="number" value="237" min="0" max="720" class="page-input" data-total="720"
-                            data-book="will-of-many">
-                        <span>of 720 pages</span>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 32.9%"></div>
-                        </div>
-                        <p class="completion">32.9% complete</p>
                     </div>
                 </div>
             </article>
@@ -161,6 +275,9 @@
             }
         });
     </script>
+
+    <!-- Include the lightbox script -->
+    <script src="lightbox.js"></script>
 </body>
 
 </html>

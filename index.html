@@ -28,6 +28,79 @@
         <a href="book-info.html">Book Info</a>
     </nav>
 
+    <!-- *** PROJECT 5: REQUIREMENT #3: Using createElement and appendChild to create welcome banner *** -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create welcome banner container
+            const welcomeBanner = document.createElement('section');
+            welcomeBanner.className = 'welcome-banner';
+
+            // Create left column for profile image
+            const imageColumn = document.createElement('div');
+            imageColumn.className = 'profile-image-column';
+
+            // Create profile image
+            const profileImage = document.createElement('img');
+            profileImage.src = 'profile-photo.jpg';  // You'll need to add this image
+            profileImage.alt = 'Aidan Scott with books';
+            profileImage.className = 'profile-photo';
+
+            // Create image frame
+            const imageFrame = document.createElement('div');
+            imageFrame.className = 'image-frame';
+
+            // Create right column for welcome text
+            const textColumn = document.createElement('div');
+            textColumn.className = 'welcome-text-column';
+
+            // Create greeting
+            const greeting = document.createElement('h2');
+            greeting.textContent = 'Welcome to My Reading Journey';
+
+            // Create welcome message
+            const welcomeMessage = document.createElement('p');
+            welcomeMessage.className = 'welcome-message';
+            welcomeMessage.textContent = 'This site is dedicated to my passion for literature. Here, you can explore my current reads, all-time favorites, and connect with me through our shared love of books.';
+
+            // Create quote box
+            const quoteBox = document.createElement('blockquote');
+            quoteBox.className = 'book-quote';
+
+            // Create quote text
+            const quoteText = document.createElement('p');
+            quoteText.textContent = '"A reader lives a thousand lives before he dies. The man who never reads lives only one."';
+
+            // Create quote attribution
+            const quoteAttribution = document.createElement('cite');
+            quoteAttribution.textContent = '— George R.R. Martin';
+
+            // Create CTA button
+            const ctaButton = document.createElement('a');
+            ctaButton.href = 'favorite-books.html';
+            ctaButton.className = 'welcome-cta-button';
+            ctaButton.textContent = 'Explore My Favorites';
+
+            // Assemble the DOM structure using appendChild
+            imageFrame.appendChild(profileImage);
+            imageColumn.appendChild(imageFrame);
+
+            quoteBox.appendChild(quoteText);
+            quoteBox.appendChild(quoteAttribution);
+
+            textColumn.appendChild(greeting);
+            textColumn.appendChild(welcomeMessage);
+            textColumn.appendChild(quoteBox);
+            textColumn.appendChild(ctaButton);
+
+            welcomeBanner.appendChild(imageColumn);
+            welcomeBanner.appendChild(textColumn);
+
+            // Insert the welcome banner at the beginning of the body content
+            const firstSection = document.querySelector('.profile-section');
+            document.body.insertBefore(welcomeBanner, firstSection);
+        });
+    </script>
+
     <!-- Bio Section -->
     <section class="profile-section">
         <h2 class="section-title">Interesting Information About Me</h2>
@@ -74,8 +147,8 @@
     </section>
 
     <script>
-        const booksRead = 42;
-        const currentlyReading = 3;
+        const booksRead = 6;
+        const currentlyReading = 2;
         const yearlyGoal = 50;
 
         function showReadingStats() {
@@ -113,6 +186,9 @@
             }, 3000);
         });
     </script>
+
+    <!-- Include the lightbox script -->
+    <script src="lightbox.js"></script>
 </body>
 
 </html>

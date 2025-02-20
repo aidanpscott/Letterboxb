@@ -141,6 +141,59 @@
             </div>
         </article>
     </div>
+
+    <!-- *** PROJECT 5: REQUIREMENT #3: Using createElement and appendChild to create author spotlight section *** -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create a new section for featured author
+            const featuredSection = document.createElement('section');
+            featuredSection.className = 'profile-section';
+
+            // Create section heading
+            const sectionHeading = document.createElement('h2');
+            sectionHeading.className = 'section-title';
+            sectionHeading.textContent = 'Featured Author';
+
+            // Create author spotlight container
+            const spotlightContainer = document.createElement('div');
+            spotlightContainer.className = 'author-spotlight';
+
+            // Create author image
+            const authorImage = document.createElement('img');
+            authorImage.src = 'author-images/china-mieville.jpg'; // Make sure to create this alt image
+            authorImage.alt = 'Featured Author - China Miéville';
+            authorImage.className = 'featured-author-image';
+
+            // Create author info
+            const authorInfo = document.createElement('div');
+            authorInfo.className = 'featured-author-info';
+
+            // Create author name
+            const authorName = document.createElement('h3');
+            authorName.textContent = 'China Miéville';
+
+            // Create author bio
+            const authorBio = document.createElement('p');
+            authorBio.textContent = 'China Miéville is an English fantasy fiction writer, comic writer, and academic. He often describes his work as "weird fiction." His narratives have won numerous awards, including the Arthur C. Clarke Award, the British Fantasy Award, and more.';
+
+            // Assemble the DOM structure using appendChild
+            authorInfo.appendChild(authorName);
+            authorInfo.appendChild(authorBio);
+
+            spotlightContainer.appendChild(authorImage);
+            spotlightContainer.appendChild(authorInfo);
+
+            featuredSection.appendChild(sectionHeading);
+            featuredSection.appendChild(spotlightContainer);
+
+            // Add the new section before the author grid
+            const authorGrid = document.querySelector('.author-grid');
+            document.body.insertBefore(featuredSection, authorGrid);
+        });
+    </script>
+
+    <!-- Include the lightbox script -->
+    <script src="lightbox.js"></script>
 </body>
 
 </html>

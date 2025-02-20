@@ -22,6 +22,200 @@
         <a href="book-info.html">Book Info</a>
     </nav>
 
+    <!-- *** PROJECT 5: REQUIREMENT #3: Using createElement and appendChild to create submission display *** -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create submission section
+            const submissionSection = document.createElement('section');
+            submissionSection.className = 'submission-section';
+
+            // Create section heading
+            const sectionHeading = document.createElement('h2');
+            sectionHeading.className = 'section-title';
+            sectionHeading.textContent = 'Featured Submission';
+
+            // Create submission container
+            const submissionContainer = document.createElement('div');
+            submissionContainer.className = 'submission-container';
+
+            // Create left section with book image
+            const imageSection = document.createElement('div');
+            imageSection.className = 'submission-image-section';
+
+            // Create decorative frame for image
+            const imageFrame = document.createElement('div');
+            imageFrame.className = 'submission-image-frame';
+
+            // Create book image
+            const bookImage = document.createElement('img');
+            bookImage.src = 'book-images/delusions-master.jpg';
+            bookImage.alt = 'Delusion\'s Master by Tanith Lee';
+            bookImage.className = 'submission-book-image';
+
+            // Create image caption
+            const imageCaption = document.createElement('p');
+            imageCaption.className = 'image-caption';
+            imageCaption.textContent = 'A numinous masterpiece!';
+
+            // Create right section with submission details
+            const detailsSection = document.createElement('div');
+            detailsSection.className = 'submission-details-section';
+
+            // Create submission info card
+            const infoCard = document.createElement('div');
+            infoCard.className = 'submission-info-card';
+
+            // Create book details container
+            const bookDetails = document.createElement('div');
+            bookDetails.className = 'book-details';
+
+            // Create book details heading
+            const detailsHeading = document.createElement('h4');
+            detailsHeading.textContent = 'Book Information:';
+
+            // Create book title
+            const bookTitle = document.createElement('p');
+            bookTitle.className = 'book-detail';
+            bookTitle.innerHTML = '<strong>Title:</strong> Delusion\'s Master';
+
+            // Create book author
+            const bookAuthor = document.createElement('p');
+            bookAuthor.className = 'book-detail';
+            bookAuthor.innerHTML = '<strong>Author:</strong> Tanith Lee';
+
+            // Create book genre
+            const bookGenre = document.createElement('p');
+            bookGenre.className = 'book-detail';
+            bookGenre.innerHTML = '<strong>Genre:</strong> Dark Fantasy';
+
+            // Create book review container
+            const reviewContainer = document.createElement('div');
+            reviewContainer.className = 'book-review';
+
+            // Create review heading
+            const reviewHeading = document.createElement('h4');
+            reviewHeading.textContent = 'Why this book is special:';
+
+            // Create review text
+            const reviewText = document.createElement('p');
+            reviewText.textContent = 'A compelling story woven with myth, gods, and twisted fates. Tanith Lee\'s prose is poetic and haunting, creating a dark fantasy world unlike any other. The character of Chuz, Lord of Delusion, is fascinating in his complexity and the themes of reality versus illusion are masterfully explored.';
+
+            // Create interactive elements section
+            const interactiveSection = document.createElement('div');
+            interactiveSection.className = 'interactive-section';
+
+            // Create notes heading
+            const notesHeading = document.createElement('h4');
+            notesHeading.textContent = 'Add Personal Notes:';
+
+            // Create notes form
+            const notesForm = document.createElement('form');
+            notesForm.className = 'notes-form';
+
+            // Create notes textarea
+            const notesTextarea = document.createElement('textarea');
+            notesTextarea.className = 'notes-textarea';
+            notesTextarea.placeholder = 'Add your personal notes about this book...';
+            notesTextarea.rows = 3;
+
+            // Create save button
+            const saveButton = document.createElement('button');
+            saveButton.type = 'button';
+            saveButton.className = 'save-notes-btn';
+            saveButton.textContent = 'Save Notes';
+
+            // Add event listener to save button
+            saveButton.addEventListener('click', function () {
+                const notes = notesTextarea.value.trim();
+                if (notes) {
+                    // Create saved notes display
+                    const savedNotes = document.createElement('div');
+                    savedNotes.className = 'saved-notes';
+
+                    // Create notes heading
+                    const notesLabel = document.createElement('h5');
+                    notesLabel.textContent = 'Your Notes:';
+
+                    // Create notes content
+                    const notesContent = document.createElement('p');
+                    notesContent.textContent = notes;
+
+                    // Create timestamp
+                    const timestamp = document.createElement('small');
+                    timestamp.className = 'notes-timestamp';
+                    const now = new Date();
+                    timestamp.textContent = `Added on ${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
+
+                    // Assemble saved notes
+                    savedNotes.appendChild(notesLabel);
+                    savedNotes.appendChild(notesContent);
+                    savedNotes.appendChild(timestamp);
+
+                    // Add to page
+                    const existingNotes = document.querySelector('.saved-notes');
+                    if (existingNotes) {
+                        interactiveSection.replaceChild(savedNotes, existingNotes);
+                    } else {
+                        interactiveSection.appendChild(savedNotes);
+                    }
+
+                    // Clear textarea
+                    notesTextarea.value = '';
+                }
+            });
+
+            // Create read more button
+            const readMoreBtn = document.createElement('a');
+            readMoreBtn.href = 'https://www.goodreads.com/book/show/669030.Delusion_s_Master?from_search=true&from_srp=true&qid=445Tfwvgiz&rank=1';
+            readMoreBtn.className = 'read-more-btn';
+            readMoreBtn.textContent = 'View on Goodreads';
+            readMoreBtn.target = '_blank';
+            readMoreBtn.rel = 'noopener noreferrer';
+
+            // Assemble the DOM structure using appendChild
+            imageFrame.appendChild(bookImage);
+            imageSection.appendChild(imageFrame);
+            imageSection.appendChild(imageCaption);
+
+            notesForm.appendChild(notesTextarea);
+            notesForm.appendChild(saveButton);
+
+            interactiveSection.appendChild(notesHeading);
+            interactiveSection.appendChild(notesForm);
+
+            reviewContainer.appendChild(reviewHeading);
+            reviewContainer.appendChild(reviewText);
+
+            bookDetails.appendChild(detailsHeading);
+            bookDetails.appendChild(bookTitle);
+            bookDetails.appendChild(bookAuthor);
+            bookDetails.appendChild(bookGenre);
+            bookDetails.appendChild(reviewContainer);
+            bookDetails.appendChild(readMoreBtn);
+
+            infoCard.appendChild(bookDetails);
+
+            detailsSection.appendChild(infoCard);
+            detailsSection.appendChild(interactiveSection);
+
+            submissionContainer.appendChild(imageSection);
+            submissionContainer.appendChild(detailsSection);
+
+            submissionSection.appendChild(sectionHeading);
+            submissionSection.appendChild(submissionContainer);
+
+            // Replace the original content
+            const bookDisplay = document.getElementById('bookDisplay');
+            const profileSection = document.querySelector('.profile-section');
+
+            // Hide the original empty message
+            bookDisplay.style.display = 'none';
+
+            // Replace original heading with our section
+            profileSection.replaceChild(submissionSection, profileSection.querySelector('.section-title'));
+        });
+    </script>
+
     <section class="profile-section">
         <h2 class="section-title">Submitted Information</h2>
         <div id="bookDisplay" class="book-display">
@@ -43,15 +237,8 @@
             // Create HTML content with the book data
             const content = `
                 <div class="book-info-card">
-                    <h3>Hello, ${bookData.name}!</h3>
-                    <p class="reader-info">
-                        You are ${bookData.age} years old (${bookData.ageInMonths} months)<br>
-                        Birth Year: ${bookData.birthYear}
-                    </p>
-                    <p class="message">${bookData.message}</p>
-                    
                     <div class="book-details">
-                        <h4>Your Favorite Book:</h4>
+                        <h4>Submitted Book:</h4>
                         <p class="book-detail"><strong>Title:</strong> ${bookData.bookTitle}</p>
                         <p class="book-detail"><strong>Author:</strong> ${bookData.author}</p>
                         <p class="book-detail"><strong>Genre:</strong> ${bookData.genre}</p>
@@ -74,48 +261,8 @@
         }
     </script>
 
-    <style>
-        .book-display {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .book-info-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .reader-info {
-            margin: 15px 0;
-            color: #34495e;
-            font-size: 1.1em;
-        }
-
-        .message {
-            padding: 10px;
-            background-color: #e8f6f3;
-            border-left: 4px solid #2ecc71;
-            margin: 15px 0;
-        }
-
-        .book-detail {
-            margin: 10px 0;
-            color: #34495e;
-        }
-
-        .book-review {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-        }
-
-        .book-review h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-    </style>
+    <!-- Include the lightbox script -->
+    <script src="lightbox.js"></script>
 </body>
 
 </html>
