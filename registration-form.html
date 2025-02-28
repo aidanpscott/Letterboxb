@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration - Aidan Scott</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>User Registration</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
+        <a href="book-form.html">Share Book</a>
+        <a href="book-info.html">Book Info</a>
+        <a href="registration-form.html">Register</a>
+    </nav>
+
+    <div class="registration-container">
+        <div class="form-requirements">
+            <h3>Registration Requirements</h3>
+            <ul>
+                <li><strong>Username:</strong> 6-15 characters, letters and numbers only, cannot start with a number.
+                </li>
+                <li><strong>Password:</strong> 8-20 characters, must include uppercase, lowercase, number, and special
+                    character (!@#$%^&*).</li>
+                <li><strong>Phone Number:</strong> Format: 123-456-7890</li>
+                <li><strong>Age:</strong> You must be at least 18 years old to register.</li>
+            </ul>
+        </div>
+
+        <form class="registration-form">
+            <div class="form-field">
+                <label for="fullName">Full Name:</label>
+                <input type="text" name="fullName" id="fullName" placeholder="John Doe" autocomplete="name" required>
+            </div>
+
+            <div class="form-field">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" placeholder="jdoe123" autocomplete="username" required>
+            </div>
+
+            <div class="form-field">
+                <label for="email">Email Address:</label>
+                <input type="email" name="email" id="email" placeholder="john.doe@example.com" autocomplete="email"
+                    required>
+            </div>
+
+            <div class="form-field">
+                <label for="password">Password:</label>
+                <div class="password-field">
+                    <input type="password" name="password" id="password" placeholder="Create a secure password"
+                        autocomplete="new-password" required>
+                    <button type="button" class="toggle-password" data-target="#password">Show</button>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="confirmPassword">Confirm Password:</label>
+                <div class="password-field">
+                    <input type="password" name="confirmPassword" id="confirmPassword"
+                        placeholder="Confirm your password" autocomplete="new-password" required>
+                    <button type="button" class="toggle-password" data-target="#confirmPassword">Show</button>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" name="phone" id="phone" placeholder="123-456-7890" autocomplete="tel" required>
+            </div>
+
+            <div class="form-field">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" name="dateOfBirth" id="dateOfBirth" autocomplete="bday" required>
+            </div>
+
+            <div class="form-field">
+                <div class="checkbox-container">
+                    <input type="checkbox" name="agreeTerms" id="agreeTerms" required>
+                    <label for="agreeTerms">I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy
+                            Policy</a>.</label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Register</button>
+        </form>
+    </div>
+
+    <script src="proj6.js"></script>
+</body>
+
+</html>
