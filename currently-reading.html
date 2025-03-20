@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currently Reading - Aidan Scott</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Add the reading tracker styles -->
+    <link rel="stylesheet" href="reading-tracker.css">
 </head>
 
 <body>
@@ -161,7 +163,7 @@
                 <img src="book-images/eleventh-cycle.jpg" alt="Eleventh Cycle">
                 <div class="book-info">
                     <h3>Eleventh Cycle</h3>
-                    <p class="book-author">by Kian N. Ardalan</p>
+                    <p class="book-author">By Kian N. Ardalan</p>
                     <div class="book-progress">
                         <input type="number" value="7" min="0" max="779" class="page-input" data-total="779"
                             data-book="eleventh-cycle">
@@ -178,7 +180,7 @@
                 <img src="book-images/runelords.jpg" alt="The Runelords">
                 <div class="book-info">
                     <h3>The Runelords</h3>
-                    <p class="book-author">by David Farland</p>
+                    <p class="book-author">By David Farland</p>
                     <div class="book-progress">
                         <input type="number" value="108" min="0" max="613" class="page-input" data-total="613"
                             data-book="runelords">
@@ -279,6 +281,10 @@
 
     <!-- Include the lightbox script -->
     <script src="lightbox.js"></script>
+
+    <!-- Add the ReadingTask class and reading tracker scripts -->
+    <script src="objects.js"></script>
+    <script src="reading-tracker.js"></script>
 </body>
 
 </html>

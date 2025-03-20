@@ -1,0 +1,190 @@
+/* Project 8 - Reading Tracker Styles */
+
+/* The other styles page is getting pretty big, so I just decided to make this its own file. */
+.reading-stats {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ecf0f1;
+}
+
+.reading-pace {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.reading-pace.on-track {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+}
+
+.reading-pace.behind {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+}
+
+.pace-indicator {
+    font-weight: bold;
+}
+
+.reading-details p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+/* Global reading stats section */
+.reading-stats-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.stats-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.stat-box {
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 150px;
+    margin: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+}
+
+.stat-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.overall-progress {
+    margin: 30px 0;
+}
+
+.progress-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.reading-projection {
+    margin-top: 30px;
+}
+
+.reading-projection h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.projection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.projection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #bdc3c7;
+}
+
+.projection-item.on-track {
+    border-left-color: #2ecc71;
+}
+
+.projection-item.behind {
+    border-left-color: #e74c3c;
+}
+
+.book-title {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.completion {
+    display: block;
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.projection-details {
+    text-align: right;
+}
+
+.finish-date {
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+/* Update notification */
+.update-notification {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(52, 152, 219, 0.9);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: bottom 0.3s ease-out;
+    font-weight: bold;
+    text-align: center;
+    max-width: 90%;
+}
+
+.update-notification.show {
+    bottom: 20px;
+}
+
+/* Media queries for responsive design */
+@media screen and (max-width: 768px) {
+    .stats-summary {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-box {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .projection-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .projection-details {
+        text-align: left;
+        margin-top: 10px;
+    }
+}
