@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Cover Puzzle - Aidan Scott</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Puzzle-specific styles */
+        .puzzle-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .puzzle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timer-container {
+            font-size: 1.2em;
+            color: #2c3e50;
+            background-color: #f5f5f5;
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timer-container i {
+            margin-right: 8px;
+        }
+
+        .controls-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .puzzle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .puzzle-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .puzzle-btn.reset {
+            background-color: #e74c3c;
+        }
+
+        .puzzle-btn.reset:hover {
+            background-color: #c0392b;
+        }
+
+        .difficulty-selector {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .puzzle-reference {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .reference-image {
+            max-width: 200px;
+            height: auto;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .puzzle-piece {
+            width: 100%;
+            aspect-ratio: 1;
+            cursor: grab;
+            border-radius: 4px;
+            background-size: 300% 300%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+            position: relative;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .puzzle-piece.correct {
+            cursor: default;
+            box-shadow: 0 0 0 2px #2ecc71;
+            transform: scale(1);
+        }
+
+        .puzzle-piece.dragging {
+            opacity: 0.8;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .puzzle-piece[draggable="false"] {
+            cursor: default;
+        }
+
+        .drop-zone {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px dashed #bdc3c7;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .drop-zone.highlight {
+            background-color: rgba(52, 152, 219, 0.2);
+            border-color: #3498db;
+        }
+
+        .complete-message {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(46, 204, 113, 0.9);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 5;
+        }
+
+        .complete-message.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .scoreboard {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid #3498db;
+        }
+
+        .scoreboard h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .top-scores {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .score-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .score-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 600px) {
+            .puzzle-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .controls-container {
+                flex-wrap: wrap;
+            }
+
+            .puzzle-btn {
+                flex: 1;
+            }
+
+            .puzzle-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Book Cover Puzzle Game</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
+        <a href="book-form.html">Share Book</a>
+        <a href="book-info.html">Book Info</a>
+        <a href="registration-form.html">Register</a>
+        <a href="puzzle-game.html">Puzzle Game</a>
+    </nav>
+
+    <section class="profile-section">
+        <h2 class="section-title">Book Cover Puzzle Challenge</h2>
+        <p>Drag and drop the puzzle pieces to recreate the book cover. How fast can you solve it?</p>
+    </section>
+
+    <div class="puzzle-container">
+        <div class="puzzle-header">
+            <div class="timer-container">
+                <i>⏱️</i> Time: <span id="timer">00:00</span>
+            </div>
+            <div class="controls-container">
+                <select id="difficulty" class="difficulty-selector">
+                    <option value="3">Easy (3×3)</option>
+                    <option value="4">Medium (4×4)</option>
+                    <option value="5">Hard (5×5)</option>
+                </select>
+                <select id="bookSelect" class="difficulty-selector">
+                    <option value="fall-of-reach">Halo: The Fall of Reach</option>
+                    <option value="dune">Dune</option>
+                    <option value="throne-of-bones">A Throne of Bones</option>
+                    <option value="dracula">Dracula</option>
+                </select>
+                <button id="startBtn" class="puzzle-btn">Start Game</button>
+                <button id="resetBtn" class="puzzle-btn reset">Reset</button>
+            </div>
+        </div>
+
+        <div class="puzzle-reference">
+            <img id="referenceImage" src="book-images/fall-of-reach.jpg" alt="Book Cover Reference"
+                class="reference-image">
+        </div>
+
+        <div id="puzzleBoard" class="puzzle-board">
+            <!-- Puzzle pieces will be dynamically added here by JavaScript -->
+            <div class="complete-message" id="completeMessage">
+                <div>
+                    <p>Puzzle Complete! 🎉</p>
+                    <p>Your time: <span id="completionTime">00:00</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scoreboard">
+            <h3>Top Scores</h3>
+            <div id="topScores" class="top-scores">
+                <!-- Scores will be dynamically added here by JavaScript -->
+                <div class="score-entry">
+                    <span>No scores yet. Complete a puzzle to set a record!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the puzzle game script -->
+    <script src="proj10.js"></script>
+
+    <!-- Include the cookies script for theme consistency -->
+    <script src="proj9.js"></script>
+</body>
+
+</html>
