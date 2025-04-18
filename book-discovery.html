@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- /**
+    * IMPORTANT: This commented section explains the differences between fetch and XMLHttpRequest
+    *
+    * Differences between Fetch API and XMLHttpRequest:
+    *
+    * 1. Syntax and Usage:
+    * - Fetch API uses Promises, making it more modern and easier to work with asynchronous code
+    * - XMLHttpRequest uses callbacks and event handlers, which can lead to "callback hell"
+    *
+    * 2. Error Handling:
+    * - Fetch doesn't reject on HTTP error status (only on network errors)
+    * - XMLHttpRequest triggers error events on HTTP errors
+    *
+    * 3. Progress Monitoring:
+    * - XMLHttpRequest has built-in progress events for uploads and downloads
+    * - Fetch needs to use Response.body and a ReadableStream for progress tracking
+    *
+    * 4. Timeout Handling:
+    * - XMLHttpRequest has a built-in timeout property
+    * - Fetch requires manual timeout implementation with AbortController
+    *
+    * 5. CORS Cookies:
+    * - Fetch doesn't send cookies by default in cross-origin requests
+    * - XMLHttpRequest sends cookies in cross-origin requests when withCredentials is true
+    *
+    * Notes on Implementation:
+    * In our site's implementation, we provide both methods to demonstrate the differences.
+    * Fetch is generally preferred for modern development due to its cleaner syntax and
+    * Promise-based approach, but XMLHttpRequest is still useful for specific cases like
+    * detailed progress tracking or better browser compatibility for older browsers.
+    */ -->
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Discovery - Aidan Scott</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- jQuery and jQuery UI CDN links -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <style>
         /* Book Discovery specific styles */
         .discovery-container {
@@ -23,6 +63,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            position: relative;
         }
 
         @media (min-width: 768px) {
@@ -232,6 +273,58 @@
             color: #7f8c8d;
             font-style: italic;
         }
+
+        /* jQuery UI Autocomplete custom styles */
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .ui-menu-item {
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .ui-menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .ui-helper-hidden-accessible {
+            display: none;
+        }
+
+        /* Help icon for search */
+        .help-icon {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .search-tooltip ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+
+        .search-tooltip li {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 
@@ -250,6 +343,7 @@
         <a href="registration-form.html">Register</a>
         <a href="puzzle-game.html">Puzzle Game</a>
         <a href="book-discovery.html">Book Search</a>
+        <a href="reading-dashboard.html">Dashboard</a>
     </nav>
 
     <section class="profile-section">
@@ -298,6 +392,9 @@
 
     <!-- Include our API script -->
     <script src="proj11.js"></script>
+
+    <!-- Include jQuery implementation -->
+    <script src="jquery.js"></script>
 </body>
 
 </html>

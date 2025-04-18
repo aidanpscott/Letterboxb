@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Dashboard - Aidan Scott</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        /* Dashboard specific styles */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .dashboard-welcome {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+
+        .dashboard-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .control-item {
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-period-select {
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .theme-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: #2c3e50;
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        .dashboard-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-container h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-chart {
+            grid-column: span 12;
+        }
+
+        .genre-chart {
+            grid-column: span 6;
+        }
+
+        .pace-chart {
+            grid-column: span 6;
+        }
+
+        .goal-chart {
+            grid-column: span 12;
+            height: 300px;
+        }
+
+        .stats-container {
+            grid-column: span 12;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .goal-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .goal-input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .goal-confirmation {
+            color: #27ae60;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .refresh-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            animation: fadeInOut 3s forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Dark theme styles */
+        .dark-theme {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .dark-theme .chart-container,
+        .dark-theme .dashboard-header,
+        .dark-theme .control-item,
+        .dark-theme .stats-container {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        .dark-theme .stat-card {
+            background-color: #2c3e50;
+        }
+
+        .dark-theme .stat-value {
+            color: #ecf0f1;
+        }
+
+        .dark-theme h2 {
+            color: #ecf0f1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+
+            .genre-chart,
+            .pace-chart {
+                grid-column: span 12;
+            }
+        }
+
+        @media print {
+
+            .dashboard-welcome,
+            .dashboard-controls,
+            .topnav,
+            .goal-form {
+                display: none !important;
+            }
+
+            .chart-container {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+
+            .dashboard-container {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Reading Dashboard</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
+        <a href="book-form.html">Share Book</a>
+        <a href="book-info.html">Book Info</a>
+        <a href="registration-form.html">Register</a>
+        <a href="puzzle-game.html">Puzzle Game</a>
+        <a href="book-discovery.html">Book Search</a>
+        <a href="reading-dashboard.html" class="active">Dashboard</a>
+    </nav>
+
+    <div class="dashboard-container" id="readingDashboard">
+        <!-- Dashboard Welcome Message -->
+        <div class="dashboard-welcome" id="dashboardWelcome">
+            <div>
+                <h2 style="margin: 0; color: white;">Welcome to Your Reading Dashboard!</h2>
+                <p style="margin: 5px 0 0 0;">Track your reading progress, analyze your habits, and set goals.</p>
+            </div>
+            <button class="welcome-close" id="welcomeClose">&times;</button>
+        </div>
+
+        <!-- Dashboard Header Stats -->
+        <div class="dashboard-header">
+            <h2>Your Reading Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Books Read This Year</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12,846</div>
+                    <div class="stat-label">Pages Read</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">306</div>
+                    <div class="stat-label">Average Pages/Book</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">84%</div>
+                    <div class="stat-label">Yearly Goal Progress</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Controls -->
+        <div class="dashboard-controls">
+            <div class="control-item">
+                <label for="timePeriodSelector">Time Period:</label>
+                <select id="timePeriodSelector" class="time-period-select">
+                    <option value="year">This Year</option>
+                    <option value="6months">Last 6 Months</option>
+                    <option value="3months">Last 3 Months</option>
+                    <option value="month">This Month</option>
+                    <option value="all">All Time</option>
+                </select>
+            </div>
+
+            <div class="control-item theme-toggle-container">
+                <span>Dark Mode:</span>
+                <label class="theme-toggle">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <button class="dashboard-btn" id="exportCSV">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Export CSV
+            </button>
+
+            <button class="dashboard-btn" id="printDashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                Print Dashboard
+            </button>
+        </div>
+
+        <!-- Dashboard Charts Grid -->
+        <div class="dashboard-grid">
+            <!-- Reading Progress Chart -->
+            <div class="chart-container progress-chart">
+                <h2>Reading Progress Over Time</h2>
+                <canvas id="readingProgressChart"></canvas>
+            </div>
+
+            <!-- Genre Distribution Chart -->
+            <div class="chart-container genre-chart">
+                <h2>Genre Distribution</h2>
+                <canvas id="genreDistributionChart"></canvas>
+            </div>
+
+            <!-- Reading Pace Chart -->
+            <div class="chart-container pace-chart">
+                <h2>Current Reading Progress</h2>
+                <canvas id="readingPaceChart"></canvas>
+            </div>
+
+            <!-- Reading Goal Chart -->
+            <div class="chart-container goal-chart">
+                <h2>Yearly Reading Goal</h2>
+                <canvas id="readingGoalChart"></canvas>
+                <div class="goal-form">
+                    <label for="newGoalInput">Update Goal:</label>
+                    <input type="number" id="newGoalInput" class="goal-input" min="1" max="500" placeholder="50">
+                    <button class="dashboard-btn" id="updateGoalBtn">Update</button>
+                </div>
+                <div id="goalConfirmation" class="goal-confirmation"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the reading tracker script for data -->
+    <script src="reading-tracker.js"></script>
+
+    <!-- Include our final project script -->
+    <script src="final.js"></script>
+
+    <!-- Include the cookies script for theme consistency -->
+    <script src="proj9.js"></script>
+</body>
+
+</html>
