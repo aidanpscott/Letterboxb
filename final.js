@@ -3,48 +3,301 @@
  * 
  * This script will ensure the sample data is displayed on the dashboard
  * by directly setting it instead of trying to use localStorage data.
+ * Using data from the first 4 months of 2025.
  */
 
 // Wait for the document to be fully loaded
 document.addEventListener('DOMContentLoaded', function () {
     console.log("Dashboard enhancement loaded");
 
-    // Force the dashboard to use sample data
-    initializeDashboardWithSampleData();
+    // Initialize dashboard with real data from currently-reading page
+    initializeEnhancedDashboard();
+
+    // Set up event listener for time period selector
+    setupTimePeriodSelector();
+
+    // Set up other dashboard event listeners
+    setupDashboardEventListeners();
 });
 
-function initializeDashboardWithSampleData() {
-    // Define sample data for the dashboard
-    const sampleData = {
+function initializeEnhancedDashboard() {
+    // Keep the total books read count at 22 as requested
+    const booksRead = 22;
+
+    // Define sample data structure for the dashboard
+    let dashboardData = {
         booksOverTime: {
-            labels: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
-            values: [3, 4, 2, 5, 3, 4]
+            labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+            values: [5, 4, 6, 7]
         },
-        paceData: [
-            { title: "Dune", percentComplete: 75, pagesPerDay: 20, isOnTrack: true },
-            { title: "The Hobbit", percentComplete: 40, pagesPerDay: 15, isOnTrack: false },
-            { title: "Project Hail Mary", percentComplete: 90, pagesPerDay: 25, isOnTrack: true },
-            { title: "Atomic Habits", percentComplete: 60, pagesPerDay: 10, isOnTrack: true }
-        ],
+        paceData: [], // Will be populated from currently-reading.html
         genreDistribution: {
-            "Fiction": 12,
-            "Science Fiction": 8,
-            "Fantasy": 7,
-            "Mystery": 5,
-            "Non-Fiction": 6
+            "Fiction": 8,
+            "Science Fiction": 6,
+            "Fantasy": 4,
+            "Mystery": 3,
+            "Non-Fiction": 4
         },
         goals: {
-            completed: 21,
-            inProgress: 3,
+            completed: booksRead,
+            inProgress: 0, // Will be updated based on currently-reading books
             target: 50
         }
     };
 
-    // Update header stats
-    updateHeaderStats(sampleData);
+    // Attempt to load currently reading books
+    loadCurrentlyReadingBooks(dashboardData, function (updatedData) {
+        // Update header stats
+        updateHeaderStats(updatedData);
 
-    // Create all charts
-    createAllCharts(sampleData);
+        // Create all charts
+        createAllCharts(updatedData);
+    });
+}
+
+/**
+ * Load book data from the currently-reading page
+ * 
+ * @param {Object} dashboardData - The dashboard data object to update
+ * @param {Function} callback - Function to call when data is loaded
+ */
+function loadCurrentlyReadingBooks(dashboardData, callback) {
+    // Check if localStorage has reading tasks (these would be from currently-reading.html)
+    const savedTasks = localStorage.getItem('readingTasks');
+
+    if (savedTasks) {
+        try {
+            // Parse the saved tasks
+            const readingTasks = JSON.parse(savedTasks);
+            console.log("Found reading tasks:", readingTasks);
+
+            // Update in-progress count
+            dashboardData.goals.inProgress = readingTasks.length;
+
+            // Extract book data for pace chart
+            dashboardData.paceData = readingTasks.map(task => {
+                const percentComplete = Math.round((task.currentPage / task.totalPages) * 100);
+
+                // Calculate pages per day
+                let pagesPerDay = 0;
+                if (task.readingSessions && task.readingSessions.length > 0) {
+                    const totalPagesRead = task.readingSessions.reduce(
+                        (sum, session) => sum + session.pagesRead, 0
+                    );
+
+                    // Get days elapsed since start
+                    const startDate = new Date(task.startDate);
+                    const now = new Date();
+                    const daysElapsed = Math.max(1, Math.ceil(
+                        (now - startDate) / (1000 * 60 * 60 * 24)
+                    ));
+
+                    pagesPerDay = Math.round(totalPagesRead / daysElapsed);
+                } else {
+                    // Default calculation if no reading sessions
+                    pagesPerDay = Math.round(task.currentPage / 7); // Assume a week of reading
+                }
+
+                // Check if on track using target date
+                const targetDate = new Date(task.targetEndDate);
+                const now = new Date();
+                const daysLeft = Math.max(0, Math.ceil(
+                    (targetDate - now) / (1000 * 60 * 60 * 24)
+                ));
+
+                const pagesLeft = task.totalPages - task.currentPage;
+                const requiredPagesPerDay = daysLeft > 0 ? Math.ceil(pagesLeft / daysLeft) : pagesLeft;
+                const isOnTrack = pagesPerDay >= requiredPagesPerDay;
+
+                return {
+                    title: task.bookTitle,
+                    percentComplete: percentComplete,
+                    pagesPerDay: pagesPerDay,
+                    isOnTrack: isOnTrack
+                };
+            });
+
+            // If no pace data was found, use some defaults
+            if (dashboardData.paceData.length === 0) {
+                console.log("No valid reading tasks found, using default pace data");
+                dashboardData.paceData = [
+                    { title: "Eleventh Cycle", percentComplete: 1, pagesPerDay: 5, isOnTrack: false },
+                    { title: "The Runelords", percentComplete: 18, pagesPerDay: 20, isOnTrack: true }
+                ];
+                dashboardData.goals.inProgress = 2;
+            }
+        } catch (error) {
+            console.error("Error parsing reading tasks:", error);
+            // Use default pace data
+            dashboardData.paceData = [
+                { title: "Eleventh Cycle", percentComplete: 1, pagesPerDay: 5, isOnTrack: false },
+                { title: "The Runelords", percentComplete: 18, pagesPerDay: 20, isOnTrack: true }
+            ];
+            dashboardData.goals.inProgress = 2;
+        }
+    } else {
+        // No saved tasks, use data from currently-reading.html directly
+        console.log("No saved reading tasks, attempting to use page input data");
+
+        // Use default pace data from the known books in currently-reading.html
+        dashboardData.paceData = [
+            { title: "Eleventh Cycle", percentComplete: 1, pagesPerDay: 5, isOnTrack: false },
+            { title: "The Runelords", percentComplete: 18, pagesPerDay: 20, isOnTrack: true }
+        ];
+        dashboardData.goals.inProgress = 2;
+    }
+
+    // Call the callback with updated data
+    callback(dashboardData);
+}
+
+/**
+ * Set up time period selector
+ */
+function setupTimePeriodSelector() {
+    const timePeriodSelector = document.getElementById('timePeriodSelector');
+
+    if (timePeriodSelector) {
+        // Update the options to prioritize months and remove year
+        timePeriodSelector.innerHTML = `
+            <option value="month">This Month</option>
+            <option value="3months" selected>Last 3 Months</option>
+            <option value="6months">Last 6 Months</option>
+            <option value="all">All Time</option>
+        `;
+
+        // Add event listener for time period changes
+        timePeriodSelector.addEventListener('change', function () {
+            const selectedPeriod = this.value;
+            updateChartsForTimePeriod(selectedPeriod);
+        });
+    }
+}
+
+/**
+ * Update charts based on selected time period
+ * 
+ * @param {string} period - Selected time period
+ */
+function updateChartsForTimePeriod(period) {
+    console.log(`Updating charts for time period: ${period}`);
+
+    // Define consistent data for different time periods
+    // We ensure the books add up as we zoom out
+    const timeData = {
+        month: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            values: [1, 2, 1, 3]  // Total: 7 for April
+        },
+        '3months': {
+            labels: ['Feb', 'Mar', 'Apr'],
+            values: [4, 6, 7]     // Total: 17 (Feb+Mar+Apr)
+        },
+        '6months': {
+            labels: ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'],
+            values: [3, 2, 5, 4, 6, 7]  // Total: 27 (last 6 months)
+        },
+        all: {
+            labels: ['Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025'],
+            values: [5, 5, 9, 13]  // Total: 32 (all time, matches 22 completed + in progress)
+        }
+    };
+
+    // Get the chart instance
+    const progressChart = Chart.getChart('readingProgressChart');
+
+    if (progressChart) {
+        // Update chart data
+        progressChart.data.labels = timeData[period].labels;
+        progressChart.data.datasets[0].data = timeData[period].values;
+
+        // Update chart
+        progressChart.update();
+
+        // Update the header stats to be consistent with the selected period
+        updateStatsForPeriod(period, timeData[period]);
+
+        // Show a notification
+        showRefreshNotification(`Dashboard updated to show ${getPeriodDisplayName(period)}`);
+    } else {
+        console.error("Reading Progress Chart not found");
+    }
+}
+
+/**
+ * Update the header statistics based on the selected time period
+ * 
+ * @param {string} period - Selected time period
+ * @param {Object} periodData - The data for the selected period
+ */
+function updateStatsForPeriod(period, periodData) {
+    // Get the total books for the period
+    const totalBooks = periodData.values.reduce((sum, count) => sum + count, 0);
+
+    // Only update if it's different from the default (22)
+    if (period === 'all') {
+        // For "all time" view, show the full 22 completed books
+        // We don't update the stats here as they should show the all-time totals
+        return;
+    }
+
+    // Calculate total pages (using a reasonable estimate)
+    const totalPages = totalBooks * 306; // Using the average from the sample data
+
+    // Update the DOM elements
+    const statElements = document.querySelectorAll('.stat-value');
+    if (statElements.length >= 4) {
+        statElements[0].textContent = totalBooks;
+        statElements[1].textContent = totalPages.toLocaleString();
+
+        // Calculate goal progress percentage
+        const goalPercentage = Math.round((totalBooks / 50) * 100);
+        statElements[3].textContent = goalPercentage + '%';
+    }
+}
+
+/**
+ * Get a user-friendly display name for a time period
+ * 
+ * @param {string} period - Time period value
+ * @returns {string} User-friendly name
+ */
+function getPeriodDisplayName(period) {
+    const displayNames = {
+        'month': 'this month',
+        '3months': 'last 3 months',
+        '6months': 'last 6 months',
+        'all': 'all time'
+    };
+
+    return displayNames[period] || period;
+}
+
+/**
+ * Show a refresh notification
+ * 
+ * @param {string} message - Message to display
+ */
+function showRefreshNotification(message) {
+    // Create notification element if it doesn't exist
+    let notification = document.querySelector('.refresh-notification');
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.className = 'refresh-notification';
+        document.body.appendChild(notification);
+    }
+
+    // Set message and show
+    notification.textContent = message;
+
+    // Remove any existing animation
+    notification.style.animation = 'none';
+
+    // Force reflow to restart animation
+    void notification.offsetWidth;
+
+    // Restart animation
+    notification.style.animation = 'fadeInOut 3s forwards';
 }
 
 function updateHeaderStats(data) {
@@ -82,7 +335,7 @@ function createAllCharts(data) {
     // Create reading goal chart
     createReadingGoalChart(data);
 
-    console.log("All charts created with sample data");
+    console.log("All charts created with dashboard data");
 }
 
 function createReadingProgressChart(data) {
@@ -554,17 +807,31 @@ function setupDashboardEventListeners() {
             }
         });
     }
+
+    // Close welcome message
+    const welcomeClose = document.getElementById('welcomeClose');
+    const welcomeMessage = document.getElementById('dashboardWelcome');
+
+    if (welcomeClose && welcomeMessage) {
+        welcomeClose.addEventListener('click', function () {
+            welcomeMessage.style.display = 'none';
+            localStorage.setItem('dashboardWelcomeShown', 'true');
+        });
+
+        // Check if welcome should be hidden
+        if (localStorage.getItem('dashboardWelcomeShown') === 'true') {
+            welcomeMessage.style.display = 'none';
+        }
+    }
 }
 
 // Helper function to export reading data as CSV
 function exportReadingData() {
-    // Create sample data for export
+    // Create sample data for export - 2025 version
     const sampleData = {
         paceData: [
-            { title: "Dune", percentComplete: 75, genre: "Science Fiction", pagesPerDay: 20, isOnTrack: true },
-            { title: "The Hobbit", percentComplete: 40, genre: "Fantasy", pagesPerDay: 15, isOnTrack: false },
-            { title: "Project Hail Mary", percentComplete: 90, genre: "Science Fiction", pagesPerDay: 25, isOnTrack: true },
-            { title: "Atomic Habits", percentComplete: 60, genre: "Non-Fiction", pagesPerDay: 10, isOnTrack: true }
+            { title: "Eleventh Cycle", percentComplete: 1, genre: "Dark Fantasy", pagesPerDay: 5, isOnTrack: false },
+            { title: "The Runelords", percentComplete: 18, genre: "Fantasy", pagesPerDay: 20, isOnTrack: true }
         ]
     };
 
@@ -581,7 +848,7 @@ function exportReadingData() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "reading_progress.csv");
+    link.setAttribute("download", "reading_progress_2025.csv");
     document.body.appendChild(link);
 
     // Trigger download
@@ -592,8 +859,3 @@ function exportReadingData() {
 
     console.log("CSV exported successfully");
 }
-
-// Initialize event listeners
-document.addEventListener('DOMContentLoaded', function () {
-    setupDashboardEventListeners();
-});
