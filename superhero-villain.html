@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superheroes and Villains - Aidan Scott</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Superhero-specific styles that complement existing site design */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .character-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .hero-card {
+            border-left: 5px solid #3498db;
+        }
+
+        .villain-card {
+            border-left: 5px solid #e74c3c;
+        }
+
+        .character-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            margin-bottom: 15px;
+        }
+
+        .character-name {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .character-details {
+            margin: 10px 0;
+        }
+
+        .character-details p {
+            margin: 8px 0;
+            color: #34495e;
+        }
+
+        .power-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .power-list li {
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+        }
+
+        .villain-card .power-list li {
+            border-left: 3px solid #e74c3c;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: white;
+        }
+
+        .hero-action {
+            background-color: #3498db;
+        }
+
+        .hero-action:hover {
+            background-color: #2980b9;
+        }
+
+        .villain-action {
+            background-color: #e74c3c;
+        }
+
+        .villain-action:hover {
+            background-color: #c0392b;
+        }
+
+        .action-display {
+            text-align: center;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+            min-height: 60px;
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .character-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                padding: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .character-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Superheroes vs Villains</h1>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Home</a>
+        <a href="currently-reading.html">Currently Reading</a>
+        <a href="favorite-books.html">Top 10 Books</a>
+        <a href="favorite-authors.html">Top 10 Authors</a>
+        <a href="book-form.html">Share Book</a>
+        <a href="book-info.html">Book Info</a>
+        <a href="registration-form.html">Register</a>
+        <a href="puzzle-game.html">Puzzle Game</a>
+        <a href="book-discovery.html">Book Search</a>
+        <a href="reading-dashboard.html" class="active">Dashboard</a>
+        <a href="superhero-villain.html" class="active">Superhero Battle</a>
+    </nav>
+
+    <section class="profile-section">
+        <h2 class="section-title">Literary Heroes and Villains</h2>
+        <p>Meet the defenders of stories and their nefarious counterparts. Click on their buttons to see them in action!
+        </p>
+    </section>
+
+    <div class="character-grid" id="characterGrid">
+        <!-- Characters will be dynamically added here by JavaScript -->
+    </div>
+
+    <div class="action-display" id="actionDisplay">
+        Click on a character's action button to see what happens!
+    </div>
+
+    <script>
+        // ES6 Class for Superheroes
+        class Superhero {
+            constructor(name, secretIdentity, powers, weakness, catchphrase) {
+                this.name = name;
+                this.secretIdentity = secretIdentity;
+                this.powers = powers;
+                this.weakness = weakness;
+                this.catchphrase = catchphrase;
+                this.image = "book-images/default-book.jpg"; // Using default image available in your project
+            }
+
+            saveTheDay() {
+                return `${this.name} shouts "${this.catchphrase}" while using ${this.powers[0]} to save the day!`;
+            }
+
+            displayCard() {
+                return `
+                    <article class="character-card hero-card">
+                        <img src="${this.image}" alt="${this.name}" class="character-image">
+                        <h3 class="character-name">${this.name}</h3>
+                        <div class="character-details">
+                            <p><strong>Secret Identity:</strong> ${this.secretIdentity}</p>
+                            <p><strong>Weakness:</strong> ${this.weakness}</p>
+                            <p><strong>Powers:</strong></p>
+                            <ul class="power-list">
+                                ${this.powers.map(power => `<li>${power}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <button class="action-btn hero-action" onclick="performHeroAction('${this.name}')">
+                            Save the Day!
+                        </button>
+                    </article>
+                `;
+            }
+        }
+
+        // ES6 Class for Villains
+        class Villain {
+            constructor(name, alterEgo, powers, evilGoal, evilLaugh) {
+                this.name = name;
+                this.alterEgo = alterEgo;
+                this.powers = powers;
+                this.evilGoal = evilGoal;
+                this.evilLaugh = evilLaugh;
+                this.image = "book-images/default-book.jpg"; // Using default image available in your project
+            }
+
+            executeEvilPlan() {
+                return `${this.name} laughs "${this.evilLaugh}" while attempting to ${this.evilGoal}!`;
+            }
+
+            displayCard() {
+                return `
+                    <article class="character-card villain-card">
+                        <img src="${this.image}" alt="${this.name}" class="character-image">
+                        <h3 class="character-name">${this.name}</h3>
+                        <div class="character-details">
+                            <p><strong>Alter Ego:</strong> ${this.alterEgo}</p>
+                            <p><strong>Evil Goal:</strong> ${this.evilGoal}</p>
+                            <p><strong>Powers:</strong></p>
+                            <ul class="power-list">
+                                ${this.powers.map(power => `<li>${power}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <button class="action-btn villain-action" onclick="performVillainAction('${this.name}')">
+                            Execute Evil Plan!
+                        </button>
+                    </article>
+                `;
+            }
+        }
+
+        // Create superheroes
+        const hero1 = new Superhero(
+            "Captain Bookkeeper",
+            "Professor Linda Lexicon",
+            ["Speed Reading", "Book Summoning", "Plot Armor"],
+            "Spoilers",
+            "Knowledge is my superpower!"
+        );
+
+        const hero2 = new Superhero(
+            "The Parabola",
+            "Dr. Matthew Mathews",
+            ["Perfect Calculation", "Geometry Mastery", "Probability Manipulation"],
+            "Irrational Numbers",
+            "Let me calculate the odds of your defeat!"
+        );
+
+        // Create villains
+        const villain1 = new Villain(
+            "Grammar Smasher",
+            "Craig Comma-Splice",
+            ["Language Corruption", "Syntax Destruction", "Apostrophe Abuse"],
+            "destroy all proper grammar",
+            "Your, going to regret this! Muahahaha!"
+        );
+
+        const villain2 = new Villain(
+            "The Plot Hole",
+            "Sarah Inconsistent",
+            ["Narrative Disruption", "Continuity Breaking", "Character Confusion"],
+            "create chaos in every story",
+            "Nothing makes sense anymore! HAHAHA!"
+        );
+
+        // Store all characters
+        const characters = {
+            heroes: [hero1, hero2],
+            villains: [villain1, villain2]
+        };
+
+        // Display characters on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const characterGrid = document.getElementById('characterGrid');
+
+            // Display heroes
+            characters.heroes.forEach(hero => {
+                characterGrid.innerHTML += hero.displayCard();
+            });
+
+            // Display villains
+            characters.villains.forEach(villain => {
+                characterGrid.innerHTML += villain.displayCard();
+            });
+        });
+
+        // Hero action function
+        function performHeroAction(heroName) {
+            const hero = characters.heroes.find(h => h.name === heroName);
+            if (hero) {
+                const actionDisplay = document.getElementById('actionDisplay');
+                actionDisplay.textContent = hero.saveTheDay();
+                actionDisplay.style.backgroundColor = '#d4edda';
+                actionDisplay.style.color = '#155724';
+                actionDisplay.style.borderLeft = '5px solid #2ecc71';
+            }
+        }
+
+        // Villain action function
+        function performVillainAction(villainName) {
+            const villain = characters.villains.find(v => v.name === villainName);
+            if (villain) {
+                const actionDisplay = document.getElementById('actionDisplay');
+                actionDisplay.textContent = villain.executeEvilPlan();
+                actionDisplay.style.backgroundColor = '#f8d7da';
+                actionDisplay.style.color = '#721c24';
+                actionDisplay.style.borderLeft = '5px solid #e74c3c';
+            }
+        }
+    </script>
+
+    <!-- Include the cookies script for theme consistency -->
+    <script src="proj9.js"></script>
+</body>
+
+</html>
